@@ -1,5 +1,7 @@
 package com.mendel.transactionsapi.controller;
 
+import com.mendel.transactionsapi.dto.Transaction;
+import com.mendel.transactionsapi.service.TransactionsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,29 +18,32 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class TransactionsControllerTest {
 
-    @Mock
+    @InjectMocks
     private TransactionController transactionController;
 
-    @InjectMocks
-    private TransactionService transactionService;
+    @Mock
+    private TransactionsService transactionService;
 
     private Transaction transaction;
 
     @BeforeEach
     void setUp() {
-        transactionController = new TransactionController(transactionService);
+        transaction = Transaction.builder()
+                .amount(5000.0)
+                .type("cars")
+                .build();
     }
 
     @Test
     void testCreateTransactionOK() {
-        when(transactionService.saveProduct(transaction)).thenReturn(transaction);
+        long transactionId = 10L;
+        when(transactionService.createTransaction(transactionId, transaction)).thenReturn(transaction);
 
-        ResponseEntity<Transaction> response = transactionController.createTransaction(transaction);
+        ResponseEntity<Transaction> response = transactionController.createTransaction(transactionId, transaction);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(transaction, response.getBody());
-        //First test
     }
 
 }
