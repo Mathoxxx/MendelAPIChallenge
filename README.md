@@ -21,6 +21,23 @@ mvn spring-boot:run
 
 The application will start on port `8080` by default.
 
+## Docker Deployment
+
+You can easily run the application using Docker and Docker Compose. This ensures you don't need Java or Maven installed on your local machine to run the project.
+
+To build and start the container in detached mode:
+```bash
+docker-compose up -d --build
+```
+
+The API will be accessible at `http://localhost:8080`.
+You can view the auto-generated Swagger UI documentation at `http://localhost:8080/swagger-ui.html`.
+
+To stop the application:
+```bash
+docker-compose down
+```
+
 ## Testing
 
 To run the test suite:
