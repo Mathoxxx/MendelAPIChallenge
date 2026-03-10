@@ -1,5 +1,6 @@
 package com.mendel.transactionsapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,5 +30,6 @@ public class Transaction {
      * Optional ID of the parent transaction, used to link transactions.
      * Can be null if the transaction has no parent.
      */
-    private Long parent_id;
+    @JsonProperty("parent_id")
+    private Long parentId;
 }

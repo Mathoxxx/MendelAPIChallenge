@@ -11,6 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -44,6 +48,32 @@ public class TransactionsControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(transaction, response.getBody());
+    }
+
+    @Test
+    void testGetTransactionsByTypeOK() {
+        String type = "cars";
+        List<Long> expectedIds = Arrays.asList(10L, 11L);
+        when(transactionService.getTransactionsByType(type)).thenReturn(expectedIds);
+
+        ResponseEntity<List<Long>> response = transactionController.getTransactionsByType(type);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(expectedIds, response.getBody());
+    }
+
+    @Test
+    void testGetTransactionsSumOK() {
+        long transactionId = 10L;
+        Map<String, Double> expectedSum = Map.of("sum", 15000.0);
+        when(transactionService.getTransactionsSum(transactionId)).thenReturn(expectedSum);
+
+        ResponseEntity<Map<String, Double>> response = transactionController.getTransactionsSum(transactionId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(expectedSum, response.getBody());
     }
 
 }
