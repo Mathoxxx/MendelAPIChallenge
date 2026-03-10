@@ -82,15 +82,35 @@ public class TransactionRepository {
         }
     }
 
+    /**
+     * Returns a transaction from the memory structure by its ID.
+     *
+     * @param transactionId The unique ID
+     * @return The matching Transaction entity or null.
+     */
     public Transaction getTransaction(long transactionId) {
         return transactions.get(transactionId);
     }
 
+    /**
+     * Gets a list of transaction IDs matching the specified type with O(1) time
+     * complexity leveraging the pre-populated ConcurrentHashMap index.
+     *
+     * @param type The type to filter by.
+     * @return A list of IDs matching the category, or an empty list.
+     */
     public List<Long> getByType(String type) {
         log.debug("Fetching transactions by type: {}", type);
         return typeIndex.getOrDefault(type, new ArrayList<>());
     }
 
+    /**
+     * Calculates the sum of the transaction and recursively calls all its
+     * sub-transactions.
+     *
+     * @param transactionId The root boundary parent ID
+     * @return The total accumulated double amount.
+     */
     public double getSum(long transactionId) {
         log.debug("Calculating sum for transaction connected to: {}", transactionId);
         return calculateSumRecursive(transactionId);

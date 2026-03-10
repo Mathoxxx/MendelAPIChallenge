@@ -1,6 +1,7 @@
 package com.mendel.transactionsapi.service;
 
 import com.mendel.transactionsapi.dto.Transaction;
+import com.mendel.transactionsapi.dto.TransactionRequest;
 import com.mendel.transactionsapi.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,13 +43,17 @@ public class TransactionsServiceTest {
     @Test
     void testCreateTransaction() {
         long transactionId = 10L;
+        TransactionRequest request = new TransactionRequest(
+                5000.0, "cars", null);
         when(transactionRepository.save(any(Transaction.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        Transaction result = transactionsService.createTransaction(transactionId, transaction);
+        Transaction result = transactionsService.createTransaction(transactionId, request);
 
         assertNotNull(result);
         assertEquals(transactionId, result.getId());
         assertEquals(5000, result.getAmount());
+
+        transaction.setId(transactionId);
         verify(transactionRepository).save(transaction);
     }
 

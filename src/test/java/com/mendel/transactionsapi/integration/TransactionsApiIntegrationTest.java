@@ -1,6 +1,7 @@
 package com.mendel.transactionsapi.integration;
 
 import com.mendel.transactionsapi.dto.Transaction;
+import com.mendel.transactionsapi.dto.TransactionRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,13 +48,14 @@ public class TransactionsApiIntegrationTest {
     }
 
     private void createTransaction(long id, double amount, String type, Long parentId) {
-        Transaction transaction = Transaction.builder()
+        TransactionRequest requestPayload = TransactionRequest
+                .builder()
                 .amount(amount)
                 .type(type)
                 .parentId(parentId)
                 .build();
 
-        HttpEntity<Transaction> request = new HttpEntity<>(transaction);
+        HttpEntity<TransactionRequest> request = new HttpEntity<>(requestPayload);
         ResponseEntity<Transaction> response = restTemplate.exchange(
                 "/transactions/" + id,
                 HttpMethod.PUT,

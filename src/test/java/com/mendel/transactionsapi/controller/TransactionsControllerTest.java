@@ -1,6 +1,7 @@
 package com.mendel.transactionsapi.controller;
 
 import com.mendel.transactionsapi.dto.Transaction;
+import com.mendel.transactionsapi.dto.TransactionRequest;
 import com.mendel.transactionsapi.service.TransactionsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,9 +42,11 @@ public class TransactionsControllerTest {
     @Test
     void testCreateTransactionOK() {
         long transactionId = 10L;
-        when(transactionService.createTransaction(transactionId, transaction)).thenReturn(transaction);
+        TransactionRequest request = new TransactionRequest(
+                5000.0, "cars", null);
+        when(transactionService.createTransaction(transactionId, request)).thenReturn(transaction);
 
-        ResponseEntity<Transaction> response = transactionController.createTransaction(transactionId, transaction);
+        ResponseEntity<Transaction> response = transactionController.createTransaction(transactionId, request);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
