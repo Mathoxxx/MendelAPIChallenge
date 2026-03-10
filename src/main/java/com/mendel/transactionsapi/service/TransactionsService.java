@@ -45,4 +45,9 @@ public class TransactionsService {
         double sum = transactionRepository.getSum(transactionId);
         return Map.of("sum", sum);
     }
+
+    public Transaction getTransactionById(long transactionId) {
+        log.info("Fetching transaction with ID: {}", transactionId);
+        return transactionRepository.getTransaction(transactionId);
+    }
 }

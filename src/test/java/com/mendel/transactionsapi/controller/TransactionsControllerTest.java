@@ -76,4 +76,16 @@ public class TransactionsControllerTest {
         assertEquals(expectedSum, response.getBody());
     }
 
+    @Test
+    void testGetTransactionByIdOK() {
+        long transactionId = 10L;
+        when(transactionService.getTransactionById(transactionId)).thenReturn(transaction);
+
+        ResponseEntity<Transaction> response = transactionController.getTransactionById(transactionId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(transaction, response.getBody());
+    }
+
 }

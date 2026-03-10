@@ -37,10 +37,13 @@ public class TransactionsApiIntegrationTest {
         ResponseEntity<List> typeResponse = restTemplate.getForEntity("/transactions/types/" + transactionType,
                 List.class);
         ResponseEntity<Map> sumResponse = restTemplate.getForEntity("/transactions/sum/" + parentId, Map.class);
+        ResponseEntity<Transaction> getResponse = restTemplate.getForEntity("/transactions/" + parentId,
+                Transaction.class);
 
         // Then
         assertTransactionsByTypeContains(typeResponse, parentId, childId);
         assertTransactionSumEquals(sumResponse, 150.5);
+        assertTransactionEquals(getResponse, parentId, 100.0, transactionType, null);
     }
 
     private void createTransaction(long id, double amount, String type, Long parentId) {
@@ -77,5 +80,16 @@ public class TransactionsApiIntegrationTest {
         assertNotNull(actualSum, "Sum value should be present in the response map");
         assertEquals(expectedSum, actualSum, 0.001,
                 "The calculated transaction sum should exactly match the expected sum");
+    }
+
+    private void assertTransactionEquals(ResponseEntity<Transaction> response, long expectedId, double expectedAmount,
+            String expectedType, Long expectedParentId) {
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Getting transaction by ID should return 200 OK");
+        Transaction body = response.getBody();
+        assertNotNull(body, "Transaction response body should not be null");
+        assertEquals(expectedId, body.getId());
+        assertEquals(expectedAmount, body.getAmount());
+        assertEquals(expectedType, body.getType());
+        assertEquals(expectedParentId, body.getParentId());
     }
 }

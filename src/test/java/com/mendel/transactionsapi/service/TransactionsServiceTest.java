@@ -76,4 +76,19 @@ public class TransactionsServiceTest {
         assertEquals(expectedSumValue, result.get("sum"));
         verify(transactionRepository).getSum(transactionId);
     }
+
+    @Test
+    void testGetTransactionById() {
+        long transactionId = 10L;
+        transaction.setId(transactionId);
+        when(transactionRepository.getTransaction(transactionId)).thenReturn(transaction);
+
+        Transaction result = transactionsService.getTransactionById(transactionId);
+
+        assertNotNull(result);
+        assertEquals(transactionId, result.getId());
+        assertEquals(transaction.getAmount(), result.getAmount());
+        assertEquals(transaction.getType(), result.getType());
+        verify(transactionRepository).getTransaction(transactionId);
+    }
 }

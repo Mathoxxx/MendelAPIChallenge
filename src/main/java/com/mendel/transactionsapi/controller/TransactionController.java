@@ -45,4 +45,13 @@ public class TransactionController {
     public ResponseEntity<Map<String, Double>> getTransactionsSum(@PathVariable("transaction_id") long transactionId) {
         return ResponseEntity.ok(transactionService.getTransactionsSum(transactionId));
     }
+
+    @GetMapping("/{transaction_id}")
+    public ResponseEntity<Transaction> getTransactionById(@PathVariable("transaction_id") long transactionId) {
+        Transaction transaction = transactionService.getTransactionById(transactionId);
+        if (transaction == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(transaction);
+    }
 }
