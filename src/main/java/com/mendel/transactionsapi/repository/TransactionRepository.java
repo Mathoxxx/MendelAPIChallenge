@@ -21,6 +21,9 @@ public class TransactionRepository {
     private final Map<Long, Transaction> transactions = new ConcurrentHashMap<>();
     private final Map<String, List<Long>> typeIndex = new ConcurrentHashMap<>();
 
+    /**
+     * Loads in-memory examples from seed-data.json
+     */
     @PostConstruct
     public void loadInitialData() {
         ObjectMapper mapper = new ObjectMapper();
