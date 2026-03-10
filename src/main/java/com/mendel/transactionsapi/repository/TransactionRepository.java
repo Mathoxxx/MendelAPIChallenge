@@ -82,6 +82,10 @@ public class TransactionRepository {
         }
     }
 
+    public Transaction getTransaction(long transactionId) {
+        return transactions.get(transactionId);
+    }
+
     public List<Long> getByType(String type) {
         log.debug("Fetching transactions by type: {}", type);
         return typeIndex.getOrDefault(type, new ArrayList<>());
